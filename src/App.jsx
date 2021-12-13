@@ -1,16 +1,21 @@
 import React from "react";
 import { StreamChat } from "stream-chat";
-import { ChannelList, Chat } from "stream-chat-react";
+import {Chat } from "stream-chat-react";
 import Cookies from "universal-cookie";
 
+import './App.css';
+
+import { ChannelContainer,ChannelListContainer } from "./components";
+
 const apiKey = "ukys4xahbadk";
+const client = StreamChat.getInstance(apiKey);
 
 const App = () => {
   return (
-    <div className="app-wrapper">
-      <Chat>
+    <div className="app__wrapper">
+      <Chat client={client} theme="team light">
         <ChannelListContainer />
-        <ChannelListContainer />
+        <ChannelContainer />
       </Chat>
     </div>
   );
