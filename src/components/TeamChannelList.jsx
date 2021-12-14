@@ -1,11 +1,36 @@
-import React from 'react'
+import React from "react";
 
-const TeamChannelList = () => {
+const TeamChannelList = ({ children, error = false, loading, type }) => {
+  if (error) {
+    return type === "team" ? (
+      <div className="team-channel-list">
+        <p className="team-channel-list__message">
+          connection error, please try again!
+        </p>
+      </div>
+    ) : null;
+  }
+  if (loading) {
     return (
-        <div>
-            hello
-        </div>
-    )
-}
+      <div className="team-channel-list">
+        <p className="team-channel-list__message loading">
+          {type === "team" ? "Channels" : "Messages"} loading...
+        </p>
+      </div>
+    );
+  }
 
-export default TeamChannelList
+  return (
+    <div className="team-channel-list">
+      <div className="team-channel-list__header">
+        <p className="team-channel-list__header__title">
+          {type === "team" ? "Channels" : "Direct Messages"}
+        </p>
+        {/*add button */}
+      </div>
+      {children}
+    </div>
+  );
+};
+
+export default TeamChannelList;
