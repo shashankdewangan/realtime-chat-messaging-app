@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import axios from "axios";
 
-import signinImage from "../assets/signup.jpg";
+const cookies = new Cookies();
 
 const initialState = {
   fullName: "",
-  userName: "",
+  username: "",
   password: "",
   confirmPassword: "",
   phoneNumber: "",
@@ -20,14 +20,41 @@ const Auth = () => {
   const handleChange = (e) => {
     setform({ ...form, [e.target.name]: e.target.value });
   };
+
+  
+
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
   };
-  const handleSubmit = (e) =>{
-    e.preventDefault();
-    console.log(form);
 
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //get all the data from the form
+    const { username, password, phoneNumber, avatarURL } = form;
+
+    const URL = "http://localhost:5000/auth";
+    //make request to back end
+    const { data: { token, userId, hashedPassword, fullName}} = await axios.post(`${URL}/${isSignup ? "Sign Up" : "Sign In"}`, {
+     
+      fullName: form.fullName,
+      username,
+      password,
+      phoneNumber,
+      avatarURL,
+    });
+
+    cookies.set("token", token);
+    cookies.set("username", username);
+    cookies.set("fullName", fullName);
+    cookies.set("userId", userId);
+
+    if (isSignup) {
+      cookies.set("phoneNumber", phoneNumber);
+      cookies.set("avatarURL", avatarURL);
+      cookies.set("hashedPassword", hashedPassword);
+    }
+    window.location.reload();
+  };
 
   return (
     <div className="auth__form-container">
@@ -48,10 +75,10 @@ const Auth = () => {
               </div>
             )}
             <div className="auth__form-container_fields-content_input">
-              <label htmlFor="userName">Username</label>
+              <label htmlFor="username">username</label>
               <input
                 placeholder="username"
-                name="userName"
+                name="username"
                 type="text"
                 onChange={handleChange}
                 required
@@ -104,14 +131,14 @@ const Auth = () => {
               </div>
             )}
             <div className="auth__form-container_fields-content_button">
-                <button>{isSignup ? "Sign Up" : "Sign In"}</button>
+              <button>{isSignup ? "Sign Up" : "Sign In"}</button>
             </div>
           </form>
           <div className="auth__form-container_fields-account">
             <p>
               {isSignup ? "Already have an account?" : "Don't have an account?"}
               <span onClick={switchMode}>
-                {isSignup ? "Sign in " : "Sign up"}
+                {isSignup ?  "Sign In" : "Sign Up"}
               </span>
             </p>
           </div>
