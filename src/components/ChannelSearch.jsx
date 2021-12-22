@@ -5,7 +5,7 @@ import { SearchIcon } from "../assets";
 
 const ChannelSearch = () => {
   const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const getChannels = async(text) =>{
       try {
