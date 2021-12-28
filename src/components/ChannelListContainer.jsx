@@ -38,6 +38,8 @@ const customChannelMessagingFilter = (channels) => {
   return channels.filter((channel) => channel.type === "messaging");
 };
 
+
+// <--------------------------->
 const ChannelListContent = ({
   isCreating,
   setIsCreating,
@@ -66,7 +68,7 @@ const ChannelListContent = ({
       <SideBar logout={logout} />
       <div className="channel-list__list__wrapper">
         <CompanyHeader />
-        <ChannelSearch />
+        <ChannelSearch setToggleContainer = {setToggleContainer}/>
         <ChannelList
           filters={filters}
           channelRenderFilterFn={customChannelTeamFilter}
